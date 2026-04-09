@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Operativos | Ubuntu 24.04 LTS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Paleta de Colores y Variables --- */
+        :root {
+            --bg-color: #F9F6F0;       /* Fondo principal cálido */
+            --text-color: #5E6B66;     /* Texto principal, suave pero legible */
+            --accent-color: #D9C5B3;   /* Acentos (botones, highlights) */
+            --detail-color: #A3B5A6;   /* Detalles (íconos, subtítulos) */
+            --border-color: #E8DCD9;   /* Bordes y separadores */
+            --card-bg: #FFFFFF;        /* Fondo de tarjetas */
+            --terminal-bg: #f4f0ea;    /* Terminal elegante y clara para texto */
+        }
+
+        /* --- Estilos Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 3rem; text-align: center; margin-bottom: 0.5rem; }
+        h2 { font-size: 2.2rem; margin-top: 3rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block; }
+        h3 { font-size: 1.5rem; margin-top: 1.5rem; color: var(--detail-color); }
+        
+        p { margin-bottom: 1rem; }
+        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+
+        /* --- Navegación --- */
+        nav {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--detail-color);
+        }
+
+        /* --- Estructura Principal --- */
+        header {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--card-bg), var(--bg-color));
+        }
+
+        header p.subtitle {
+            font-size: 1.2rem;
+            color: var(--detail-color);
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            padding-top: 2rem;
+        }
+
+        /* --- Componentes Visuales --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--detail-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .terminal {
+            background-color: var(--terminal-bg);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            color: #4a5350;
+            overflow-x: auto;
+        }
+
+        .terminal-cmd {
+            color: var(--detail-color);
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: rgba(217, 197, 179, 0.15); 
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .note i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .glossary-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .glossary-item strong {
+            color: var(--detail-color);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* --- Botones --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
+        }
+
+        .btn:hover {
+            background-color: var(--detail-color);
+            transform: translateY(-2px);
+        }
+
+        /* --- Sección Portafolio --- */
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            padding: 1rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe, .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- Terminal Interactiva Simulada --- */
+        .interactive-terminal-container {
+            background-color: #1E1E1E;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border: 2px solid var(--border-color); /* Toque elegante para integrarlo al diseño */
+            overflow: hidden;
+            margin-top: 1rem;
+            font-family: 'Ubuntu Mono', 'Courier New', Courier, monospace;
+        }
+
+        .interactive-terminal-header {
+            background-color: #2D2D2D;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .terminal-dots span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .dot-red { background-color: #FF5F56; }
+        .dot-yellow { background-color: #FFBD2E; }
+        .dot-green { background-color: #27C93F; }
+
+        .terminal-title {
+            color: #A3B5A6;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .interactive-terminal-body {
+            height: 400px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            color: #F8F8F2;
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .interactive-terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .interactive-terminal-body::-webkit-scrollbar-track {
+            background: #1E1E1E; 
+        }
+        .interactive-terminal-body::-webkit-scrollbar-thumb {
+            background: #444; 
+            border-radius: 4px;
+        }
+
+        .prompt-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.3rem;
+        }
+
+        .prompt-user {
+            color: #8AE234; /* Verde Ubuntu */
+            font-weight: bold;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .prompt-cmd {
+            color: #FFFFFF;
+            flex-grow: 1;
+        }
+
+        .prompt-response {
+            color: #D3D7CF;
+            margin-bottom: 1rem;
+            white-space: pre-wrap; /* Respeta los saltos de línea para neofetch y listas */
+            word-wrap: break-word;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: inherit;
+            flex-grow: 1;
+            outline: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .terminal-actions {
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--detail-color);
+        }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; text-align: center; gap: 0.5rem; }
+            h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#af1">Componentes de SO</a>
+        <a href="#af2">Procesos e Hilos</a>
+        <a href="#af3">Memoria y Archivos</a>
+        <a href="#af4">Seguridad</a>
+        <a href="#portafolio">Portafolio</a>
+        <a href="#simulador">Simulador Ubuntu</a>
+    </nav>
+
+    <header>
+        <h1>Sistemas Operativos</h1>
+        <p class="subtitle">Explorando el corazón de tu computadora con elegancia y precisión, aplicando cada concepto en Ubuntu 24.04 LTS.</p>
+    </header>
+
+    <main>
+        <section id="af1">
+            <h2><i class="fa-solid fa-seedling"></i> 1. Definición y Componentes</h2>
+            <p>Un <strong>Sistema Operativo (SO)</strong> es el software principal que actúa como un puente elegante entre tú (la usuaria), el hardware de tu computadora y las aplicaciones. Si pensamos en <strong>Ubuntu 24.04 LTS</strong>, este puente está diseñado para ser seguro, de código abierto y sumamente estable.</p>
+
+            <h3>Componentes y sus Funciones en Ubuntu 24.04</h3>
+            <div class="grid">
+                <div class="card">
+                    <i class="fa-solid fa-microchip card-icon"></i>
+                    <h4>Núcleo (Kernel Linux 6.8)</h4>
+                    <p>Es el corazón del sistema. En Ubuntu 24.04, gestiona la memoria, los procesos y el hardware. Opera en un área protegida llamada <strong>Espacio Kernel</strong>.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-code-branch card-icon"></i>
+                    <h4>Llamadas al Sistema (Syscalls)</h4>
+                    <p>La forma educada en la que las aplicaciones piden favores al kernel (ej. leer un archivo). Actúan como la frontera entre el Espacio de Usuario y el Kernel.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-desktop card-icon"></i>
+                    <h4>Interfaz de Usuario</h4>
+                    <p>La cara visible. En Ubuntu 24.04 usamos <strong>GNOME 46</strong> (entorno gráfico) y <strong>Bash</strong> (nuestra elegante terminal) para interactuar cómodamente.</p>
+                </div>
+            </div>
+
+            <div class="note">
+                <i class="fa-solid fa-layer-group"></i>
+                <div>
+                    <strong>Espacio de Usuario vs. Espacio Kernel:</strong>
+                    Tu navegador web o editor de texto viven en el <em>Espacio de Usuario</em>. No pueden tocar el hardware directamente. Cuando necesitan guardar un documento, hacen una llamada al sistema para pedirle al <em>Espacio Kernel</em> que lo haga por ellos de forma segura.
+                </div>
+            </div>
+
+            <h3>Manejo de Recursos y Partes de Gestión</h3>
+            <p>El núcleo se divide en gestores especializados que mantienen todo en armonía:</p>
+            <ul>
+                <li><strong>Gestor de Procesos (Planificador):</strong> Decide qué aplicación usa el procesador (CPU) en cada milisegundo.</li>
+                <li><strong>Gestor de Memoria:</strong> Reparte la RAM. Si abres muchas pestañas, decide qué mantener en memoria rápida.</li>
+                <li><strong>Gestor de E/S (Entrada/Salida):</strong> Administra teclados, pantallas y red.</li>
+                <li><strong>Gestor de Archivos:</strong> Organiza tus datos en el disco duro.</li>
+            </ul>
+            
+            <h4>Herramientas en Ubuntu para manejo de recursos:</h4>
+            <div class="terminal">
+                # Ver el uso de CPU y RAM en tiempo real en la terminal<br>
+                <span class="terminal-cmd">$ top</span>  (o el más visual e interactivo: <span class="terminal-cmd">$ htop</span>)<br><br>
+                # Para herramientas gráficas, puedes buscar en el menú:<br>
+                <span class="terminal-cmd">"Monitor del Sistema"</span> (System Monitor)
+            </div>
+
+            <h3>Glosario Esencial de Ubuntu</h3>
+            <div class="glossary-grid">
+                <div class="glossary-item"><strong>Kernel:</strong> El núcleo Linux (versión 6.8 en Ubuntu 24.04).</div>
+                <div class="glossary-item"><strong>Shell:</strong> Intérprete de comandos (por defecto Bash).</div>
+                <div class="glossary-item"><strong>Daemon:</strong> Procesos silenciosos en segundo plano.</div>
+                <div class="glossary-item"><strong>systemd / init:</strong> El primer proceso que arranca y gestiona a los demás.</div>
+                <div class="glossary-item"><strong>Wayland:</strong> El protocolo moderno que dibuja las ventanas en tu pantalla.</div>
+                <div class="glossary-item"><strong>GNOME:</strong> El entorno de escritorio visual.</div>
+                <div class="glossary-item"><strong>apt / snap:</strong> Herramientas para instalar aplicaciones.</div>
+                <div class="glossary-item"><strong>GRUB:</strong> El menú inicial que carga el sistema al encender.</div>
+            </div>
+
+            <h3>Categorías y Comparación de SO</h3>
+            <p>Los sistemas operativos se pueden clasificar. Por su arquitectura, Ubuntu (Linux) es un <strong>núcleo monolítico</strong> (todo el núcleo trabaja en el mismo espacio de memoria para ser muy rápido). Por usuarios, es un sistema <strong>multiusuario</strong> real (varias personas pueden conectarse al mismo tiempo sin interferir).</p>
+            <div class="card" style="margin-top: 1rem;">
+                <p><strong>Ubuntu 24.04 vs Otros SO:</strong></p>
+                <ul>
+                    <li><strong>Windows 11:</strong> Núcleo híbrido, enfoque en escritorio y gaming. Ubuntu es superior en desarrollo, servidores y personalización libre.</li>
+                    <li><strong>macOS Sonoma:</strong> Basado en Unix, elegante pero cerrado a hardware Apple. Ubuntu te da una experiencia Unix libre en cualquier PC.</li>
+                    <li><strong>Android 14 / ChromeOS:</strong> Utilizan el kernel de Linux debajo, pero están súper especializados (móviles y nube web).</li>
+                    <li><strong>Fedora / Debian:</strong> Hermanos de Linux. Debian es el padre conservador de Ubuntu. Fedora usa software más experimental.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="af2">
+            <h2><i class="fa-solid fa-arrows-spin"></i> 2. Procesos e Hilos</h2>
+            <p>Un <strong>proceso</strong> es simplemente un programa en ejecución. Cuando abres Firefox en Ubuntu, nace un proceso.</p>
+
+            <h3>Estados de un Proceso y Transiciones</h3>
+            <p>En su ciclo de vida, un proceso viaja por diferentes estados:</p>
+            <ul>
+                <li><strong>Nuevo:</strong> El sistema está preparando la aplicación.</li>
+                <li><strong>Listo (Ready):</strong> En la fila de espera, listo para usar el procesador.</li>
+                <li><strong>En Ejecución (Running):</strong> El procesador está ejecutando sus instrucciones.</li>
+                <li><strong>Bloqueado (Sleeping/Waiting):</strong> Pausado esperando algo (ej. esperando que el usuario escriba algo).</li>
+                <li><strong>Terminado (Zombie/Dead):</strong> Finalizó, pero el SO está limpiando su rastro.</li>
+            </ul>
+
+            <div class="terminal">
+                # Ver todos los procesos y su estado en Ubuntu (columna STAT)<br>
+                <span class="terminal-cmd">$ ps aux</span>
+            </div>
+
+            <h3>Control y Gestión de Procesos</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Identificadores</h4>
+                    <p>Cada proceso recibe un <strong>PID</strong> (Process ID). Su creador es el <strong>PPID</strong> (Parent PID).</p>
+                </div>
+                <div class="card">
+                    <h4>Prioridades</h4>
+                    <p>Podemos ser amables ("nice") con el sistema. Un proceso con <em>nice</em> alto cede el paso a otros.</p>
+                    <div class="terminal">
+                        # Cambiar prioridad (ej. hacerlo menos prioritario)<br>
+                        <span class="terminal-cmd">$ renice +10 PID</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Señales</h4>
+                    <p>Formas de comunicarnos con el proceso. La señal más famosa es terminarlo.</p>
+                    <div class="terminal">
+                        # Cerrar amablemente (SIGTERM)<br>
+                        <span class="terminal-cmd">$ kill PID</span><br>
+                        # Forzar cierre inmediato (SIGKILL)<br>
+                        <span class="terminal-cmd">$ kill -9 PID</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <i class="fa-solid fa-microchip"></i>
+                <div>
+                    <strong>Multiprocesamiento Simétrico (SMP) y Núcleos:</strong>
+                    Ubuntu 24.04 soporta SMP a la perfección. Esto significa que si tu computadora tiene 8 núcleos, el kernel de Linux (monolítico, a diferencia de sistemas de <em>micro kernel</em> que separan sus funciones básicas en procesos lentos) reparte los procesos de forma equitativa entre todos los núcleos simultáneamente.
+                </div>
+            </div>
+
+            <h3>Hilos y Concurrencia</h3>
+            <p>Un proceso puede dividirse en tareas más pequeñas llamadas <strong>hilos (threads)</strong>. En Ubuntu, la librería clásica para desarrolladores es `pthreads` (POSIX threads). Los hilos comparten la memoria del proceso padre, lo que los hace más ligeros de crear.</p>
+            
+            <p><strong>Tipos de Concurrencia en la Terminal:</strong></p>
+            <div class="terminal">
+                # Paralelismo real: ocurre solo si tienes múltiples núcleos.<br>
+                # Concurrencia: lanzar una tarea en "background" (segundo plano) para seguir usando la terminal.<br>
+                <span class="terminal-cmd">$ comando_largo &</span><br>
+                <span class="terminal-cmd">$ jobs</span> # Ver tareas en fondo<br>
+                <span class="terminal-cmd">$ fg</span> # Traer al frente (foreground)<br>
+                <span class="terminal-cmd">$ bg</span> # Enviar al fondo (background)
+            </div>
+
+            <h3>Modelos, Ventajas e Interacciones</h3>
+            <p>Al programar para Ubuntu, podemos usar varios modelos: <strong>multiproceso</strong> (procesos aislados, más seguro), <strong>multihilo</strong> (comparten memoria, más rápido), o <strong>reactivo/actores</strong> (responden a eventos). La ventaja principal es una respuesta inmediata (responsiveness) y mejor uso de recursos.</p>
+            
+            <div class="card" style="margin-top: 1rem;">
+                <h4>La convivencia entre procesos</h4>
+                <p>Los procesos pueden ser <em>independientes</em> o <em>cooperativos</em>. Cuando cooperan, surgen interacciones delicadas:</p>
+                <ul>
+                    <li><strong>Competencia por recursos:</strong> Dos apps queriendo imprimir al mismo tiempo.</li>
+                    <li><strong>Sincronización y Exclusión Mutua:</strong> Mecanismos (como semáforos) para que solo uno modifique un archivo a la vez.</li>
+                    <li><strong>Deadlock (Abrazo mortal):</strong> Un error fatal donde el proceso A espera al B, y el B espera al A. ¡Ambos se quedan congelados infinitamente!</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="af3">
+            <h2><i class="fa-solid fa-hard-drive"></i> 3. Memoria y Sistemas de Archivos</h2>
+            
+            <p>La forma en que Ubuntu recuerda y organiza nuestra información es vital para su elegancia y velocidad.</p>
+
+            <h3>Tipos de Memoria y Sistemas de Archivos en Ubuntu 24.04</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4><i class="fa-solid fa-memory card-icon" style="font-size: 1.5rem;"></i> Tipos de Memoria</h4>
+                    <ul>
+                        <li><strong>RAM:</strong> Memoria principal, ultrarrápida pero volátil.</li>
+                        <li><strong>Swap (Intercambio):</strong> Espacio en tu disco duro que Ubuntu usa como "RAM de emergencia" (ahora típicamente un archivo `/swapfile`).</li>
+                        <li><strong>Caché y Buffer:</strong> RAM sobrante que Ubuntu usa inteligentemente para guardar archivos recientes y acelerar el sistema.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4><i class="fa-solid fa-folder-tree card-icon" style="font-size: 1.5rem;"></i> Sistemas de Archivos</h4>
+                    <ul>
+                        <li><strong>ext4:</strong> El estándar confiable por defecto en Ubuntu.</li>
+                        <li><strong>Btrfs / XFS:</strong> Para usuarios avanzados o servidores (excelentes para instantáneas y grandes volúmenes).</li>
+                        <li><strong>NTFS / FAT:</strong> Sistemas de Windows. Ubuntu los lee perfectamente si conectas un USB.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Control de Espacios en Memoria</h3>
+            <p>¿Cómo sabemos cuánta memoria nos queda? Usa estos comandos:</p>
+            <div class="terminal">
+                # Ver memoria RAM de forma legible (Human readable)<br>
+                <span class="terminal-cmd">$ free -h</span><br><br>
+                # Leer directamente de los archivos del kernel<br>
+                <span class="terminal-cmd">$ cat /proc/meminfo</span><br>
+                <span class="terminal-cmd">$ cat /proc/swaps</span><br><br>
+                # Estadísticas de memoria virtual<br>
+                <span class="terminal-cmd">$ vmstat 2</span>
+            </div>
+            <p>También puedes abrir la aplicación gráfica <strong>Monitor del Sistema</strong> y revisar la pestaña "Recursos".</p>
+
+            <h3>Problemas Frecuentes y Soluciones Prácticas</h3>
+            <div class="card">
+                <ul>
+                    <li><strong>Fragmentación:</strong> Espacios vacíos desperdiciados. En Linux (ext4) la fragmentación externa es casi inexistente gracias a cómo guarda los bloques, ¡no necesitas "desfragmentar" como en sistemas antiguos!</li>
+                    <li><strong>Fugas de Memoria (Memory Leaks):</strong> Un programa mal programado que no devuelve la RAM que pidió. Solución: identificarlo con <code>top</code> y cerrarlo con <code>kill</code>.</li>
+                    <li><strong>Sobrecarga de Caché:</strong> A veces la RAM parece llena, pero es pura caché. Ubuntu la libera sola, pero si necesitas limpiarla manualmente (como root):<br>
+                    <span class="terminal" style="display:inline-block; margin: 0.5rem 0; padding: 0.5rem;"># echo 3 > /proc/sys/vm/drop_caches</span></li>
+                    <li><strong>Swapping excesivo (Thrashing):</strong> Cuando tu PC se pone lentísima porque no tiene RAM y usa el disco duro constantemente.
+                        <br><em>Solución elegante:</em> Ajustar la <strong>swappiness</strong> (qué tanto depende Ubuntu del swap).
+                        <br><span class="terminal" style="display:inline-block; margin: 0.5rem 0; padding: 0.5rem;">$ sysctl vm.swappiness=10</span> (Le dice a Ubuntu que use la swap solo en extrema necesidad).
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="af4">
+            <h2><i class="fa-solid fa-shield-halved"></i> 4. Seguridad en Ubuntu</h2>
+            <p>Aunque Linux tiene una arquitectura sumamente segura por diseño (gracias a sus permisos estrictos), no es invulnerable. Mantener tu entorno protegido requiere buenas prácticas.</p>
+
+            <h3>Amenazas, Intrusos y Autenticación</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Amenazas</h4>
+                    <p>Los virus tradicionales de Windows no funcionan aquí. Sin embargo, Linux es objetivo de <em>Trojans</em>, <em>Malware para IoT</em> (ej. botnets como Mirai), mineros de criptomonedas (ej. Linux.Lady) y <em>Ransomware</em> enfocado a secuestrar servidores web.</p>
+                </div>
+                <div class="card">
+                    <h4>Tipos de Intrusos</h4>
+                    <p>Desde <em>Script Kiddies</em> (aficionados usando herramientas copiadas) hasta atacantes sofisticados o <em>Insider Threats</em> (empleados maliciosos). Suelen entrar por servicios mal configurados.</p>
+                </div>
+                <div class="card">
+                    <h4>Autenticaciones</h4>
+                    <p>
+                        • Contraseña local (cifrada).<br>
+                        • SSH con llaves criptográficas (infinitamente más seguro).<br>
+                        • 2FA (Autenticación de 2 factores) vía <code>libpam-google-authenticator</code>.<br>
+                        • Biometría (Huella dactilar vía <code>fprint</code>, soportado nativamente en muchos laptops modernos).
+                    </p>
+                </div>
+            </div>
+
+            <h3>Niveles de Seguridad y Prevención</h3>
+            <div class="note">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                    <strong>Perfiles de Protección:</strong><br>
+                    <strong>Usuario Doméstico:</strong> Activar el cortafuegos UFW, dejar actualizaciones automáticas e instalar aplicaciones vía <em>snap</em> (que vienen en un "sandbox" o entorno aislado gracias a AppArmor).<br>
+                    <strong>Red Empresarial:</strong> Auditar con <code>auditd</code>, bloquear ataques de fuerza bruta con <code>Fail2ban</code>.<br>
+                    <strong>Servidor:</strong> Deshabilitar el acceso del usuario "root" por SSH, usar puertos no estándar, requerir siempre llaves SSH.
+                </div>
+            </div>
+
+            <h4>Análisis de Problemas y Monitoreo</h4>
+            <div class="terminal">
+                # Ver puertos abiertos a internet (¿hay algún servicio colado?)<br>
+                <span class="terminal-cmd">$ ss -tuln</span><br><br>
+                # Revisar procesos en forma de árbol para ver actividades raras<br>
+                <span class="terminal-cmd">$ ps auxf</span><br><br>
+                # Revisar intentos de inicio de sesión fallidos<br>
+                <span class="terminal-cmd">$ sudo cat /var/log/auth.log</span>
+            </div>
+
+            <h3>Prevención de Desastres y Manejo de Riesgos</h3>
+            <p>La regla de oro de la protección de la información es la regla <strong>3-2-1</strong>: Mantén 3 copias de tus datos, en 2 medios diferentes, con 1 copia fuera de sitio (nube o lugar físico distinto).</p>
+            <ul>
+                <li><strong>Herramientas:</strong> Usa <code>Deja Dup</code> (Copias de Seguridad en entorno gráfico) para tus carpetas de usuario, y <code>Timeshift</code> para hacer instantáneas del sistema completo (ideal si usas Btrfs o rsync).</li>
+                <li><strong>Administración de Riesgos:</strong> Mantén tu sistema al día con un elegante <code>sudo apt update && sudo apt upgrade</code>.</li>
+            </ul>
+
+            <div class="card" style="margin-top: 1rem;">
+                <h4>Seguridad a nivel Hardware y Archivos</h4>
+                <p>Si te roban el portátil, una simple contraseña no detendrá al ladrón si saca el disco duro. La solución es el <strong>Cifrado de disco completo (LUKS)</strong>, el cual puedes activar muy fácilmente durante la instalación de Ubuntu 24.04.</p>
+                <p>A nivel de software, domina los permisos. Utiliza <code>chmod</code> (cambiar permisos de lectura/escritura) y <code>chown</code> (cambiar el dueño). Para casos complejos, usa ACL (Listas de Control de Acceso).</p>
+                
+                <p><strong>Herramientas de auditoría extra:</strong></p>
+                <ul>
+                    <li><strong>Gufw:</strong> Interfaz gráfica hermosa y sencilla para tu cortafuegos.</li>
+                    <li><strong>ClamAV:</strong> Un antivirus para escanear archivos (muy útil si compartes archivos con sistemas Windows).</li>
+                    <li><strong>Rkhunter / Lynis:</strong> Herramientas avanzadas para auditar tu sistema y buscar <em>rootkits</em> (programas que se esconden en el kernel).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="portafolio">
+            <h2><i class="fa-regular fa-folder-open"></i> Portafolio de Actividades</h2>
+            <p>Documentos entregados a lo largo del semestre en la materia de Sistemas Operativos.</p>
+
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video width="100%" height="100%" controls>
+                        <source src="C:\Users\cruza\OneDrive - Universidad Autonoma de Nuevo León\SEMESTRE 5\Sistemas Operativos\Actividad fundamental 2/vidio.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <span style="font-size: 2.5rem; margin-bottom: 1rem; display: block;">📄</span>
+                    <h4>AF1 - Definición de SO</h4>
+                    <p>Reporte sobre la arquitectura base, funciones de los componentes y clasificación de sistemas operativos.</p>
+                    <a href="Actividad fundamental 1_Grupo 015.pdf" class="btn"><i class="fa-solid fa-paperclip"></i> Ver documento</a>
+                </div>
+                <div class="card">
+                    <span style="font-size: 2.5rem; margin-bottom: 1rem; display: block;">⚙️</span>
+                    <h4>AF2 - Procesos e Hilos</h4>
+                    <p>Investigación sobre la concurrencia, estados de procesos, multiprocesamiento y exclusión mutua en Ubuntu.</p>
+                    <a href="Actividad fundamental 2_Grupo 015.pdf" class="btn"><i class="fa-solid fa-paperclip"></i> Ver documento</a>
+                </div>
+                <div class="card">
+                    <span style="font-size: 2.5rem; margin-bottom: 1rem; display: block;">💾</span>
+                    <h4>AF3 - Memoria y Archivos</h4>
+                    <p>Análisis de los sistemas de archivos (ext4), uso de memoria virtual y resolución de problemas frecuentes.</p>
+                    <a href="Actividad fundamental 3_Grupo 015.pdf" class="btn"><i class="fa-solid fa-paperclip"></i> Ver documento</a>
+                </div>
+                <div class="card">
+                    <span style="font-size: 2.5rem; margin-bottom: 1rem; display: block;">🛡️</span>
+                    <h4>AF4 - Seguridad</h4>
+                    <p>Documento técnico sobre prevención de intrusos, autenticación, copias de seguridad y cifrado en Linux.</p>
+                    <a href="Actividad fundamental 4_Grupo 015.pdf" class="btn"><i class="fa-solid fa-paperclip"></i> Ver documento</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulador">
+            <h2><i class="fa-solid fa-terminal"></i> Terminal Ubuntu · Simulador</h2>
+            <p>Prueba comandos básicos de Ubuntu sin riesgo. Esta terminal simula la salida de comandos reales con fines didácticos.</p>
+
+            <div class="interactive-terminal-container">
+                <div class="interactive-terminal-header">
+                    <div class="terminal-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <div class="terminal-title">estudiante@ubuntu: ~</div>
+                    <div></div> </div>
+                <div class="interactive-terminal-body" id="term-output-container">
+                    <div class="prompt-response">¡Bienvenida a la terminal interactiva! Escribe 'help' para ver los comandos disponibles.</div>
+                    
+                    <div id="term-history"></div>
+                    
+                    <div class="input-wrapper">
+                        <span class="prompt-user">estudiante@ubuntu:~$</span>
+                        <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false" autofocus>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="terminal-actions">
+                <button class="btn" id="btn-clear-term"><i class="fa-solid fa-broom"></i> Limpiar Terminal</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Diseñado con elegancia técnica para la materia de Sistemas Operativos.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-family: 'Lato', sans-serif;">Enfoque: Ubuntu 24.04 LTS (Noble Numbat)</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const termInput = document.getElementById('term-input');
+            const termHistory = document.getElementById('term-history');
+            const termContainer = document.getElementById('term-output-container');
+            const btnClear = document.getElementById('btn-clear-term');
+
+            // Función para hacer scroll al final
+            const scrollToBottom = () => {
+                termContainer.scrollTop = termContainer.scrollHeight;
+            };
+
+            // Evento al presionar Enter en el input
+            termInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const cmdStr = this.value.trim();
+                    if (cmdStr) {
+                        processCommand(cmdStr);
+                    } else {
+                        // Si solo dio Enter sin escribir, añade una línea vacía
+                        const emptyLine = document.createElement('div');
+                        emptyLine.className = 'prompt-line';
+                        emptyLine.innerHTML = `<span class="prompt-user">estudiante@ubuntu:~$</span>`;
+                        termHistory.appendChild(emptyLine);
+                        scrollToBottom();
+                    }
+                    this.value = ''; // Limpiar input
+                }
+            });
+
+            // Botón limpiar
+            btnClear.addEventListener('click', () => {
+                termHistory.innerHTML = '';
+                termInput.focus();
+            });
+
+            // Lógica de procesamiento de comandos
+            function processCommand(cmdStr) {
+                // 1. Agregar el comando introducido al historial visual
+                const promptLine = document.createElement('div');
+                promptLine.className = 'prompt-line';
+                promptLine.innerHTML = `<span class="prompt-user">estudiante@ubuntu:~$</span> <span class="prompt-cmd">${cmdStr}</span>`;
+                termHistory.appendChild(promptLine);
+
+                // 2. Parsear el comando
+                const parts = cmdStr.split(' ');
+                const cmd = parts[0].toLowerCase();
+                const args = parts.slice(1).join(' ').trim();
+                let response = '';
+
+                // 3. Evaluar el comando
+                switch(cmd) {
+                    case 'help':
+                        response = "Comandos disponibles:\n  help         - Muestra este menú\n  whoami       - Muestra el usuario actual\n  pwd          - Muestra el directorio actual\n  ls           - Lista los archivos (usa 'ls -la' para detalles)\n  date         - Muestra la fecha y hora del sistema\n  uname -a     - Muestra información del núcleo\n  free -h      - Muestra el uso de la memoria RAM\n  ps aux       - Lista los procesos en ejecución\n  echo [texto] - Imprime el texto en pantalla\n  df -h        - Muestra el espacio en discos\n  sudo apt update - Simula actualización de paquetes\n  neofetch     - Muestra el logo y detalles del sistema\n  clear / cls  - Limpia la pantalla de la terminal";
+                        break;
+                    case 'whoami':
+                        response = 'estudiante';
+                        break;
+                    case 'pwd':
+                        response = '/home/estudiante';
+                        break;
+                    case 'ls':
+                        if(args === '-la' || args === '-al') {
+                            response = "drwxr-xr-x 15 estudiante estudiante 4096 abr 10 10:00 .\ndrwxr-xr-x  3 root       root       4096 mar 15 08:30 ..\ndrwxr-xr-x  2 estudiante estudiante 4096 abr  1 12:00 Descargas\ndrwxr-xr-x  2 estudiante estudiante 4096 abr  5 09:15 Documentos\ndrwxr-xr-x  2 estudiante estudiante 4096 mar 20 18:45 Imágenes\ndrwxr-xr-x  2 estudiante estudiante 4096 mar 22 14:20 Música\ndrwxr-xr-x  2 estudiante estudiante 4096 mar 25 11:10 Vídeos";
+                        } else if (args !== '') {
+                            response = `ls: no se puede acceder a '${args}': No existe el archivo o el directorio`;
+                        } else {
+                            response = 'Descargas  Documentos  Imágenes  Música  Vídeos';
+                        }
+                        break;
+                    case 'date':
+                        response = new Date().toString();
+                        break;
+                    case 'uname':
+                        if(args === '-a') {
+                            response = 'Linux ubuntu 6.8.0-31-generic #31-Ubuntu SMP x86_64 GNU/Linux';
+                        } else {
+                            response = 'Linux';
+                        }
+                        break;
+                    case 'free':
+                        if(args === '-h') {
+                            response = "               total        used        free      shared  buff/cache   available\nMem:           7.7Gi       3.2Gi       1.5Gi       250Mi       3.0Gi       4.1Gi\nSwap:          2.0Gi          0B       2.0Gi";
+                        } else {
+                            response = "comando incompleto o no soportado en esta simulación. Prueba 'free -h'";
+                        }
+                        break;
+                    case 'ps':
+                        if(args === 'aux') {
+                            response = "USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot           1  0.0  0.1 168248 11520 ?        Ss   mar15   0:05 /sbin/init\nestudiante  1452  0.1  0.0  14520  5230 pts/0    Ss   10:00   0:00 bash\nestudiante  2341  5.2  8.4 345021 68021 ?        Sl   10:05   1:23 /usr/bin/gnome-shell";
+                        } else {
+                            response = "comando incompleto. Prueba 'ps aux'";
+                        }
+                        break;
+                    case 'echo':
+                        response = args;
+                        break;
+                    case 'df':
+                        if(args === '-h') {
+                            response = "S.ficheros     Tamaño Usados  Disp Uso% Montado en\ntmpfs            788M   1.8M  786M   1% /run\n/dev/sda2         98G    45G   48G  48% /\ntmpfs            3.9G      0  3.9G   0% /dev/shm";
+                        } else {
+                            response = "comando incompleto. Prueba 'df -h'";
+                        }
+                        break;
+                    case 'clear':
+                    case 'cls':
+                        termHistory.innerHTML = ''; // Limpia el historial visual
+                        return; // Salimos temprano para no imprimir nada
+                    case 'sudo':
+                        if (args === 'apt update' || args === 'apt-get update') {
+                            response = "Obj:1 http://mx.archive.ubuntu.com/ubuntu noble InRelease\nObj:2 http://mx.archive.ubuntu.com/ubuntu noble-updates InRelease\nObj:3 http://security.ubuntu.com/ubuntu noble-security InRelease\nLeyendo lista de paquetes... Hecho\nCreando árbol de dependencias... Hecho\nLeyendo la información de estado... Hecho\nTodos los paquetes están actualizados.";
+                        } else {
+                            response = `[sudo] contraseña para estudiante: \nsudo: comando no encontrado o no permitido en simulación: ${args}`;
+                        }
+                        break;
+                    case 'neofetch':
+                        response = `<span style="color:#E95420">            .-/+oossssoo+/-.               </span> <span style="color:#E95420; font-weight:bold;">estudiante</span>@<span style="color:#E95420; font-weight:bold;">ubuntu</span>
+<span style="color:#E95420">        \`:+ssssssssssssssssss+:\`           </span> -----------------
+<span style="color:#E95420">      -+ssssssssssssssssssyyssss+-         </span> <span style="color:#E95420; font-weight:bold;">OS</span>: Ubuntu 24.04 LTS x86_64
+<span style="color:#E95420">    .ossssssssssssssssssdMMMNysssso.       </span> <span style="color:#E95420; font-weight:bold;">Kernel</span>: 6.8.0-31-generic
+<span style="color:#E95420">   /ssssssssssshdmmNNmmyNMMMMhssssss/      </span> <span style="color:#E95420; font-weight:bold;">Uptime</span>: 2 hours, 15 mins
+<span style="color:#E95420">  +ssssssssshmydMMMMMMMNddddyssssssss+     </span> <span style="color:#E95420; font-weight:bold;">Packages</span>: 1542 (dpkg), 12 (snap)
+<span style="color:#E95420"> /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    </span> <span style="color:#E95420; font-weight:bold;">Shell</span>: bash 5.2.21
+<span style="color:#E95420">.ssssssssdMMMNhsssssssssshNMMMdssssssss.   </span> <span style="color:#E95420; font-weight:bold;">Resolution</span>: 1920x1080
+<span style="color:#E95420">+sssshhhyNMMNyssssssssssssyNMMMysssssss+   </span> <span style="color:#E95420; font-weight:bold;">DE</span>: GNOME 46.0
+<span style="color:#E95420">ossyNMMMNyMMhsssssssssssssshmmmhssssssso   </span> <span style="color:#E95420; font-weight:bold;">WM Theme</span>: Adwaita
+<span style="color:#E95420">ossyNMMMNyMMhsssssssssssssshmmmhssssssso   </span> <span style="color:#E95420; font-weight:bold;">Theme</span>: Yaru [GTK2/3]
+<span style="color:#E95420">+sssshhhyNMMNyssssssssssssyNMMMysssssss+   </span> <span style="color:#E95420; font-weight:bold;">Icons</span>: Yaru [GTK2/3]
+<span style="color:#E95420">.ssssssssdMMMNhsssssssssshNMMMdssssssss.   </span> <span style="color:#E95420; font-weight:bold;">Terminal</span>: gnome-terminal
+<span style="color:#E95420"> /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/    </span> <span style="color:#E95420; font-weight:bold;">CPU</span>: Intel i5-12400F (12) @ 4.400GHz
+<span style="color:#E95420">  +sssssssssdmydMMMMMMMMddddyssssssss+     </span> <span style="color:#E95420; font-weight:bold;">GPU</span>: NVIDIA GeForce RTX 3060
+<span style="color:#E95420">   /ssssssssssshdmmNNmmyNMMMMhssssss/      </span> <span style="color:#E95420; font-weight:bold;">Memory</span>: 3276MiB / 7854MiB
+<span style="color:#E95420">    .ossssssssssssssssssdMMMNysssso.       </span> 
+<span style="color:#E95420">      -+sssssssssssssssssyyyssss+-         </span> 
+<span style="color:#E95420">        \`:+ssssssssssssssssss+:\`           </span> 
+<span style="color:#E95420">            .-/+oossssoo+/-.               </span> `;
+                        break;
+                    default:
+                        response = `comando no encontrado: ${cmd}. Escribe 'help' para ver opciones.`;
+                }
+
+                // 4. Imprimir la respuesta si existe
+                if (response) {
+                    const responseLine = document.createElement('div');
+                    responseLine.className = 'prompt-response';
+                    responseLine.innerHTML = response;
+                    termHistory.appendChild(responseLine);
+                }
+
+                // 5. Bajar el scroll automático
+                scrollToBottom();
+            }
+
+            // Enfocar la terminal al hacer clic en ella
+            termContainer.addEventListener('click', () => {
+                termInput.focus();
+            });
+        });
+    </script>
+</body>
+</html>
