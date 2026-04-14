@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AF2 | Sistemas Operativos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="af1.html">AF1</a>
+        <a href="af2.html" class="active">AF2</a>
+        <a href="af3.html">AF3</a>
+        <a href="af4.html">AF4</a>
+        <a href="actividades.html">Portafolio</a>
+        <a href="terminal.html">Terminal</a>
+    </nav>
+
+    <main>
+        <h1>AF2</h1>
+        <h2>Procesos, Hilos y Concurrencia en Ubuntu 24.04</h2>
+        
+        <h3>Problemas Centrales de la Concurrencia</h3>
+        <p>La concurrencia surge cuando dos o más procesos o hilos se ejecutan de manera simultánea y comparten recursos del sistema. Esto permite un mejor aprovechamiento del procesador pero introduce problemas complejos que deben ser controlados.</p>
+
+        <figure class="image-wrapper">
+            <img src="Video e imágenes/imagen-af2-race-condition.jpg.png" alt="Esquema de condición de carrera entre dos procesos">
+            <figcaption>Figura 2.1: Esquema visual de una Condición de Carrera.</figcaption>
+        </figure>
+
+        <h3>Condiciones de Carrera (Race Conditions)</h3>
+        <p>Una condición de carrera ocurre cuando el resultado final de una ejecución depende del orden en que se intercalan las instrucciones de los procesos. Este orden depende del planificador del sistema operativo y de factores como interrupciones o tiempos de ejecución.</p>
+        <p>El problema aparece cuando varios procesos acceden y modifican un recurso compartido al mismo tiempo, como un archivo o un registro en memoria.</p>
+        
+        <p>Comando útil en Ubuntu para detectar condiciones de carrera:</p>
+        <div class="terminal-block">
+            $ strace -p PID
+        </div>
+        
+        <figure class="image-wrapper">
+            <img src="Video e imágenes/imagen-af2-seccion-critica.jpg.png" alt="Diagrama de exclusión mutua y sección crítica">
+            <figcaption>Figura 2.2: Implementación de la Exclusión Mutua en una Sección Crítica.</figcaption>
+        </figure>
+
+        <h3>Secciones Críticas</h3>
+        <p>Una sección crítica es la parte del código donde un proceso accede a un recurso compartido que no puede ser utilizado simultáneamente por otro proceso sin provocar inconsistencias.</p>
+        <p>Ejemplos de operaciones en sección crítica:</p>
+        <ul>
+            <li>Actualizar una variable compartida.</li>
+            <li>Escribir en un archivo común.</li>
+            <li>Modificar estructuras del sistema operativo.</li>
+        </ul>
+
+        <div class="card">
+            <h4>Requerimientos para una Solución</h4>
+            <ul>
+                <li><strong>Exclusión Mutua:</strong> Garantiza que solo un proceso puede estar dentro de su sección crítica en un momento dado.</li>
+                <li><strong>Progreso:</strong> Si ningún proceso está ejecutando su sección crítica, la decisión de quién entra no puede posponerse indefinidamente.</li>
+                <li><strong>Espera Limitada:</strong> Asegura que existe un límite de tiempo para que un proceso acceda para que no haya una inanición (starvation).</li>
+            </ul>
+        </div>
+
+        <figure class="image-wrapper">
+            <img src="Video e imágenes/imagen-af2-hilos.jpg.png" alt="Representación de hilos vs procesos en Ubuntu">
+            <figcaption>Figura 2.3: Representación estructural de Hilos vs Procesos.</figcaption>
+        </figure>
+
+        <h3>Comandos en Ubuntu para gestionar procesos y concurrencia</h3>
+        <div class="terminal-block">
+            $ ps aux                   # Listar procesos<br>
+            $ htop                     # Monitoreo interactivo<br>
+            # pthread_create           # Crear hilos (programación en C)<br>
+            $ kill -9 PID              # Terminar un proceso<br>
+            $ nice -n 10 ./programa    # Ejecutar con prioridad baja<br>
+            $ taskset -c 0 ./programa  # Fijar proceso a un núcleo específico
+        </div>
+    </main>
+
+    <footer><p>Grupo 015 • Ubuntu 24.04 LTS</p></footer>
+</body>
+</html>

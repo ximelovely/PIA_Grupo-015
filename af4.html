@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AF4 | Sistemas Operativos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="af1.html">AF1</a>
+        <a href="af2.html">AF2</a>
+        <a href="af3.html">AF3</a>
+        <a href="af4.html" class="active">AF4</a>
+        <a href="actividades.html">Portafolio</a>
+        <a href="terminal.html">Terminal</a>
+    </nav>
+
+    <main>
+        <h1>AF4</h1>
+        <h2>Seguridad en Sistemas Operativos - Implementación en Ubuntu</h2>
+
+        <h3>1. Identificación de Amenazas</h3>
+        <p>Comandos utilizados en Ubuntu para identificar y auditar el estado del sistema:</p>
+        <div class="terminal-block">
+            $ top              # Monitoreo de procesos en tiempo real<br>
+            $ netstat -tulnp   # Ver puertos abiertos y servicios escuchando<br>
+            $ who              # Usuarios conectados al sistema<br>
+            $ last             # Historial de inicios de sesión<br>
+            $ journalctl -xe   # Revisar logs del sistema
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h4>2. Seguridad a nivel sistema</h4>
+                <div class="terminal-block" style="margin-top: 0.5rem;">
+                    $ sudo adduser usuario_seguro<br>
+                    $ sudo chmod 700 /home/usuario_seguro
+                </div>
+            </div>
+            <div class="card">
+                <h4>3. Firewall (UFW)</h4>
+                <div class="terminal-block" style="margin-top: 0.5rem;">
+                    $ sudo ufw enable<br>
+                    $ sudo ufw allow 22/tcp<br>
+                    $ sudo ufw allow 80/tcp<br>
+                    $ sudo ufw allow 443/tcp<br>
+                    $ sudo ufw status verbose
+                </div>
+            </div>
+        </div>
+
+        <figure class="image-wrapper">
+            <img src="imagen-af4-firewall.jpg" alt="Captura de UFW mostrando reglas activas">
+            <figcaption>Figura 4.1: Reglas de red configuradas en el firewall UFW.</figcaption>
+        </figure>
+
+        <h3>4. Protección contra ataques de fuerza bruta (Fail2ban)</h3>
+        <div class="terminal-block">
+            $ sudo apt update<br>
+            $ sudo apt install fail2ban<br>
+            $ sudo systemctl start fail2ban<br>
+            $ sudo systemctl enable fail2ban<br>
+            $ sudo fail2ban-client status sshd
+        </div>
+
+        <figure class="image-wrapper">
+            <img src="imagen-af4-fail2ban.jpg" alt="Dashboard de fail2ban con puertos protegidos">
+            <figcaption>Figura 4.2: Protección activa de puertos mediada por Fail2ban.</figcaption>
+        </figure>
+
+        <h3>5. Backups y recuperación</h3>
+        <div class="terminal-block">
+            # Copia simple<br>
+            $ cp -r /home/usuario /home/backup_usuario<br><br>
+            # Copia incremental con rsync<br>
+            $ rsync -av --delete /home/usuario /media/backup/<br><br>
+            # Respaldo con compresión<br>
+            $ tar -czvf backup_$(date +%Y%m%d).tar.gz /home/usuario
+        </div>
+
+        <figure class="image-wrapper">
+            <img src="imagen-af4-backup.jpg" alt="Esquema de backup 3-2-1 con rsync y cifrado">
+            <figcaption>Figura 4.3: Arquitectura de respaldo basada en el esquema 3-2-1.</figcaption>
+        </figure>
+
+        <h3>6. Cifrado de archivos y discos</h3>
+        <div class="terminal-block">
+            # Cifrado de archivo individual con GPG<br>
+            $ gpg -c archivo_sensible.txt<br><br>
+            # Descifrar<br>
+            $ gpg archivo_sensible.txt.gpg<br><br>
+            # Verificar si LUKS (cifrado de disco) está activo:<br>
+            $ lsblk -o NAME,FSTYPE,MOUNTPOINT | grep crypto
+        </div>
+
+        <h3>Herramientas Adicionales</h3>
+        <div class="grid">
+            <div class="card">
+                <h4>Monitoreo y Auditoría</h4>
+                <p><strong>Lynis:</strong> <code>sudo lynis audit system</code></p>
+                <p><strong>Tcpdump:</strong> <code>sudo tcpdump -i eth0 -c 100 -w cap.pcap</code></p>
+                <p><strong>Auditd:</strong> Auditoría detallada del sistema.</p>
+            </div>
+            <div class="card">
+                <h4>Protección Especializada</h4>
+                <p><strong>ClamAV:</strong> Antivirus para Linux.</p>
+                <p><strong>Rkhunter:</strong> Detección de rootkits.</p>
+                <p><strong>AppArmor:</strong> Control de acceso obligatorio (MAC).</p>
+            </div>
+        </div>
+
+        <h3>10. Conclusión</h3>
+        <p>La implementación de herramientas de seguridad en Ubuntu permite aplicar de manera práctica los conceptos teóricos de protección en sistemas operativos. Un sistema Ubuntu bien configurado (con firewall, fail2ban, backups cifrados y monitoreo) es altamente resistente a amenazas externas.</p>
+    </main>
+
+    <footer><p>Grupo 015 • Ubuntu 24.04 LTS</p></footer>
+</body>
+</html>

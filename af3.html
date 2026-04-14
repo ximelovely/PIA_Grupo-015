@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AF3 | Sistemas Operativos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="af1.html">AF1</a>
+        <a href="af2.html">AF2</a>
+        <a href="af3.html" class="active">AF3</a>
+        <a href="af4.html">AF4</a>
+        <a href="actividades.html">Portafolio</a>
+        <a href="terminal.html">Terminal</a>
+    </nav>
+
+    <main>
+        <h1>AF3</h1>
+        <h2>Memoria y Sistemas de Archivos</h2>
+        
+        <p>La forma en que Ubuntu recuerda y organiza nuestra información es vital para su elegancia y velocidad.</p>
+
+        <div class="grid">
+            <div class="card">
+                <h4>Tipos de Memoria</h4>
+                <ul>
+                    <li><strong>RAM:</strong> Memoria principal, ultrarrápida pero volátil.</li>
+                    <li><strong>Swap (Intercambio):</strong> Espacio en disco que Ubuntu usa como "RAM de emergencia" (típicamente `/swapfile`).</li>
+                    <li><strong>Caché y Buffer:</strong> RAM sobrante usada inteligentemente para guardar archivos recientes y acelerar el sistema.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Sistemas de Archivos</h4>
+                <ul>
+                    <li><strong>ext4:</strong> El estándar confiable por defecto en Ubuntu.</li>
+                    <li><strong>Btrfs / XFS:</strong> Para usuarios avanzados o servidores (excelentes para instantáneas).</li>
+                    <li><strong>NTFS / FAT:</strong> Sistemas de Windows que Ubuntu puede leer sin problemas.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Control de Espacios en Memoria</h3>
+        <p>¿Cómo sabemos cuánta memoria nos queda? Usa estos comandos:</p>
+        <div class="terminal-block">
+            $ free -h<br>
+            $ cat /proc/meminfo<br>
+            $ vmstat 2
+        </div>
+
+        <h3>Problemas Frecuentes y Soluciones Prácticas</h3>
+        <div class="card">
+            <ul>
+                <li><strong>Fragmentación:</strong> Espacios vacíos desperdiciados. En Linux (ext4) la fragmentación externa es casi inexistente, ¡no necesitas desfragmentar!</li>
+                <li><strong>Fugas de Memoria (Memory Leaks):</strong> Un programa que no devuelve la RAM. Identifícalo con <code>top</code> y ciérralo con <code>kill</code>.</li>
+                <li><strong>Sobrecarga de Caché:</strong> Si necesitas limpiarla manualmente:<br>
+                <code style="display:block; padding:0.5rem; background:#f0eaea; margin-top:0.5rem;"># echo 3 > /proc/sys/vm/drop_caches</code></li>
+                <li><strong>Swapping excesivo (Thrashing):</strong> Cuando la PC usa el disco duro constantemente por falta de RAM.<br>
+                <em>Solución:</em> Ajustar la swappiness.<br>
+                <code style="display:block; padding:0.5rem; background:#f0eaea; margin-top:0.5rem;">$ sysctl vm.swappiness=10</code>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <footer><p>Grupo 015 • Ubuntu 24.04 LTS</p></footer>
+</body>
+</html>

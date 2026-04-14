@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador | Sistemas Operativos</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .interactive-terminal { background-color: #1E1E1E; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); border: 2px solid var(--border-color); overflow: hidden; font-family: 'Ubuntu Mono', monospace; margin: 2rem 0; }
+        .terminal-head { background-color: #2D2D2D; padding: 0.8rem 1.5rem; display: flex; align-items: center; }
+        .terminal-dots span { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; }
+        .terminal-body { height: 400px; padding: 1.5rem; overflow-y: auto; color: #F8F8F2; font-size: 0.95rem; display: flex; flex-direction: column; }
+        .user-prompt { color: #8AE234; font-weight: bold; margin-right: 0.5rem; }
+        .cmd-input { background: transparent; border: none; color: white; font-family: inherit; font-size: inherit; flex-grow: 1; outline: none; }
+        .cmd-line { display: flex; align-items: center; margin-top: 0.5rem; }
+        .cmd-output { color: #D3D7CF; margin-bottom: 1rem; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="af1.html">AF1</a>
+        <a href="af2.html">AF2</a>
+        <a href="af3.html">AF3</a>
+        <a href="af4.html">AF4</a>
+        <a href="actividades.html">Portafolio</a>
+        <a href="terminal.html" class="active">Terminal</a>
+    </nav>
+
+    <main>
+        <h2 style="display:block; text-align:center;">💻 Simulador de Ubuntu</h2>
+        <p style="text-align:center;">Prueba comandos básicos sin riesgo en un entorno controlado.</p>
+
+        <div class="interactive-terminal">
+            <div class="terminal-head">
+                <div class="terminal-dots">
+                    <span style="background:#FF5F56"></span>
+                    <span style="background:#FFBD2E"></span>
+                    <span style="background:#27C93F"></span>
+                </div>
+                <div style="color:#A3B5A6; font-size:0.9rem; margin-left:auto; margin-right:auto;">xime@ubuntu: ~</div>
+            </div>
+            
+            <div class="terminal-body" id="t-body">
+                <div class="cmd-output">Bienvenida. Escribe 'help' para ver los comandos disponibles.</div>
+                <div id="t-history"></div>
+                <div class="cmd-line">
+                    <span class="user-prompt">xime@ubuntu:~$</span>
+                    <input type="text" class="cmd-input" id="t-input" autocomplete="off" autofocus>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align:right;">
+            <button class="btn" id="t-clear">Limpiar Historial</button>
+        </div>
+    </main>
+
+    <footer><p>Grupo 015 • Ubuntu 24.04 LTS</p></footer>
+
+    <script>
+        const input = document.getElementById('t-input');
+        const history = document.getElementById('t-history');
+        const body = document.getElementById('t-body');
+
+        document.getElementById('t-clear').onclick = () => { history.innerHTML = ''; input.focus(); };
+        body.onclick = () => input.focus();
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                let out = '';
+                
+                if(cmd) {
+                    const c = cmd.split(' ')[0].toLowerCase();
+                    if(c === 'help') out = "Comandos: help, whoami, pwd, ls, date, clear, uname, echo, cat, mkdir, touch, rm, cp, mv, grep, find, wc, head, tail, sort";
+                    else if(c === 'whoami') out = "xime";
+                    else if(c === 'pwd') out = "/home/xime";
+                    else if(c === 'ls') out = "Descargas Documentos Imágenes Música";
+                    else if(c === 'date') out = new Date().toString();
+                    else if(c === 'uname') out = "Linux ubuntu 6.8.0-31-generic";
+                    else if(c === 'echo') out = cmd.substring(5) || "Uso: echo [texto]";
+                    else if(c === 'cat') out = "Uso: cat [archivo]";
+                    else if(c === 'mkdir') out = "Directorio creado.";
+                    else if(c === 'touch') out = "Archivo creado.";
+                    else if(c === 'rm') out = "Archivo eliminado.";
+                    else if(c === 'cp') out = "Archivo copiado.";
+                    else if(c === 'mv') out = "Archivo movido.";
+                    else if(c === 'grep') out = "Búsqueda completada.";
+                    else if(c === 'find') out = "Búsqueda de archivos completada.";
+                    else if(c === 'wc') out = "0 0 0";
+                    else if(c === 'head') out = "Primeras líneas del archivo.";
+                    else if(c === 'tail') out = "Últimas líneas del archivo.";
+                    else if(c === 'sort') out = "Contenido ordenado.";
+                    else if(c === 'clear') { history.innerHTML = ''; input.value = ''; return; }
+                    else out = "Comando no encontrado. Escribe 'help'.";
+                }
+
+                history.innerHTML += `<div class="cmd-line"><span class="user-prompt">xime@ubuntu:~$</span> ${cmd}</div>`;
+                if(out) history.innerHTML += `<div class="cmd-output">${out}</div>`;
+                
+                input.value = '';
+                body.scrollTop = body.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
